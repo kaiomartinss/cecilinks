@@ -12,10 +12,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cecília Palitot</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="assets/cecipro.jpeg">
+    <link rel="icon" href="assets/WhatsApp Image 2026-01-16 at 14.31.08 (2).jpeg">
   </head>
   <body>
-    <div id="container">
+    <div id="container" style="position: relative;">
+      <a href="admin.html" style="position: absolute; top: 20px; right: 20px; color: #c5d2f8; font-size: 24px; transition: transform 0.3s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">
+        <ion-icon name="settings-outline"></ion-icon>
+      </a>
       <div id="profile">
         <h1>Cecília Palitot</h1>
         <h4>Consultoria de Imagem</h3>
@@ -75,5 +78,40 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
+
+    <script>
+      // Carregar dados do admin
+      function loadAdminData() {
+        const savedData = localStorage.getItem('cecilinksData');
+        if (savedData) {
+          const data = JSON.parse(savedData);
+          
+          // Atualizar perfil
+          document.querySelector('#profile h1').textContent = data.profile.name;
+          document.querySelector('#profile h4').textContent = data.profile.subtitle;
+          document.querySelector('#profile img').src = data.profile.image;
+          document.querySelector('#agendar p').innerHTML = data.profile.agendarText;
+          document.querySelector('link[rel="icon"]').href = data.profile.image;
+          
+          // Atualizar links
+          const ul = document.querySelector('ul');
+          ul.innerHTML = '';
+          data.links.forEach(link => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${link.url}" target="_blank">${link.text}</a>`;
+            ul.appendChild(li);
+          });
+          
+          // Atualizar redes sociais
+          const socialLinks = document.querySelectorAll('#social-links a');
+          socialLinks[0].href = data.social.instagram;
+          socialLinks[1].href = data.social.whatsapp;
+          socialLinks[2].href = `mailto:${data.social.email}`;
+        }
+      }
+
+      // Carregar ao iniciar a página
+      window.addEventListener('DOMContentLoaded', loadAdminData);
+    </script>
   </body>
 </html>

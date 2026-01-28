@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Cecília Palitot</title>
+    <link rel="icon" href="assets/cecipro.jpeg">
+    <style>
+      * {
+        margin: 0;
+        padding: 0; 
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Playfair Display", serif;
+        background: #4f0c28;
+        color: #c5d2f8;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      #admin-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+      }
+
+      .section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .section h2 {
+        margin-bottom: 15px;
+        font-size: 20px;
+        color: #c5d2f8;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      input[type="text"],
+      input[type="url"],
+      input[type="file"],
+      textarea {
+        width: 100%;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        color: #c5d2f8;
+        font-family: "Playfair Display", serif;
+        font-size: 14px;
+      }
+
+      input[type="text"]::placeholder,
+      input[type="url"]::placeholder,
+      textarea::placeholder {
+        color: rgba(197, 210, 248, 0.5);
+      }
+
+      input[type="text"]:focus,
+      input[type="url"]:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #c5d2f8;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 60px;
+      }
+
+      button {
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+        color: #c5d2f8;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #c5d2f8;
+      }
+
+      .btn-add {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .btn-save {
+        width: 100%;
+        margin-top: 20px;
+        font-size: 16px;
+        padding: 15px;
+      }
+
+      .link-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .link-item .form-group {
+        margin-bottom: 10px;
+      }
+
+      .btn-remove {
+        background: rgba(220, 53, 69, 0.3);
+        border-color: rgba(220, 53, 69, 0.5);
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .btn-remove:hover {
+        background: rgba(220, 53, 69, 0.5);
+      }
+
+      .preview {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .preview img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .success-message {
+        background: rgba(40, 167, 69, 0.3);
+        border: 1px solid rgba(40, 167, 69, 0.5);
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+        display: none;
+      }
+
+      .btn-view {
+        background: rgba(23, 162, 184, 0.3);
+        border-color: rgba(23, 162, 184, 0.5);
+        margin-left: 10px;
+      }
+
+      .btn-view:hover {
+        background: rgba(23, 162, 184, 0.5);
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .actions button {
+        flex: 1;
+      }
+
+      /* Modal de Login */
+      #loginModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .login-box {
+        background: rgba(79, 12, 40, 0.95);
+        padding: 40px;
+        border-radius: 12px;
+        border: 2px solid rgba(197, 210, 248, 0.3);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+      }
+
+      .login-box h2 {
+        margin-bottom: 10px;
+        font-size: 24px;
+      }
+
+      .login-box p {
+        margin-bottom: 25px;
+        font-size: 14px;
+        opacity: 0.8;
+      }
+
+      .login-box input {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        color: #c5d2f8;
+        font-family: "Playfair Display", serif;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      .login-box input:focus {
+        outline: none;
+        border-color: #c5d2f8;
+      }
+
+      .login-box button {
+        width: 100%;
+        padding: 15px;
+        background: rgba(197, 210, 248, 0.2);
+        border: 1px solid rgba(197, 210, 248, 0.5);
+        border-radius: 8px;
+        color: #c5d2f8;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 16px;
+      }
+
+      .login-box button:hover {
+        background: rgba(197, 210, 248, 0.3);
+        border-color: #c5d2f8;
+      }
+
+      .error-message {
+        color: #ff6b6b;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+      }
+
+      #admin-container {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Modal de Login -->
+    <div id="loginModal">
+      <div class="login-box">
+        <p>Digite a senha para acessar o painel</p>
+        <input 
+          type="password" 
+          id="passwordInput" 
+          placeholder="Digite a senha"
+          onkeypress="if(event.key === 'Enter') verificarSenha()"
+        >
+        <button onclick="verificarSenha()">Entrar</button>
+        <div class="error-message" id="errorMessage">❌ Senha incorreta!</div>
+      </div>
+    </div>
+
+    <div id="admin-container">
+      <h1>Painel de Administração</h1>
+
+      <div class="success-message" id="successMessage">
+        Alterações salvas com sucesso!
+      </div>
+
+      <!-- Seção de Perfil -->
+      <div class="section">
+        <h2>👤 Informações do Perfil</h2>
+        <div class="form-group">
+          <label for="profileName">Nome:</label>
+          <input type="text" id="profileName" placeholder="Cecília Palitot">
+        </div>
+        <div class="form-group">
+          <label for="profileSubtitle">Subtítulo:</label>
+          <input type="text" id="profileSubtitle" placeholder="Consultoria de Imagem">
+        </div>
+        <div class="form-group">
+          <label for="agendarText">Texto de Agendamento:</label>
+          <input type="text" id="agendarText" placeholder="Agende sua análise!👇">
+        </div>
+      </div>
+
+      <!-- Seção de Foto -->
+      <div class="section">
+        <h2>📷 Foto de Perfil</h2>
+        <div class="form-group">
+          <label for="profileImageFile">Carregar Foto:</label>
+          <input type="file" id="profileImageFile" accept="image/*" onchange="handleImageUpload(event)">
+          <div class="preview">
+            <img id="imagePreview" src="assets/cecipro.jpeg" alt="Preview">
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de Links -->
+      <div class="section">
+        <h2>🔗 Links</h2>
+        <div id="linksContainer"></div>
+        <button class="btn-add" onclick="addLink()">+ Adicionar Link</button>
+      </div>
+
+      <!-- Seção de Redes Sociais -->
+      <div class="section">
+        <h2>📱 Redes Sociais (Ícones Rodapé)</h2>
+        <div class="form-group">
+          <label for="instagramUrl">Instagram:</label>
+          <input type="url" id="instagramUrl" placeholder="https://www.instagram.com/ceciliapalitot/">
+        </div>
+        <div class="form-group">
+          <label for="whatsappUrl">WhatsApp:</label>
+          <input type="url" id="whatsappUrl" placeholder="https://wa.me/5583986668183">
+        </div>
+        <div class="form-group">
+          <label for="emailUrl">Email:</label>
+          <input type="text" id="emailUrl" placeholder="ceciliapalitot5@gmail.com">
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="actions">
+        <button class="btn-save" onclick="saveChanges()">💾 Salvar Alterações</button>
+        <button class="btn-view" onclick="viewPage()">👁️ Ver Página</button>
+      </div>
+    </div>
+
+    <script>
+      // ===== AUTENTICAÇÃO =====
+      const SENHA_ADMIN = "cecizinha123"; // Altere esta senha!
+      
+      function verificarSenha() {
+        const senha = document.getElementById('passwordInput').value;
+        const errorMsg = document.getElementById('errorMessage');
+        
+        if (senha === SENHA_ADMIN) {
+          // Senha correta - ocultar modal e mostrar painel
+          document.getElementById('loginModal').style.display = 'none';
+          document.getElementById('admin-container').style.display = 'block';
+          // Salvar sessão
+          sessionStorage.setItem('adminAuth', 'true');
+          loadData();
+        } else {
+          // Senha incorreta
+          errorMsg.style.display = 'block';
+          document.getElementById('passwordInput').value = '';
+          document.getElementById('passwordInput').focus();
+          
+          // Ocultar mensagem após 3 segundos
+          setTimeout(() => {
+            errorMsg.style.display = 'none';
+          }, 3000);
+        }
+      }
+      
+      // Verificar se já está autenticado na sessão
+      window.addEventListener('DOMContentLoaded', () => {
+        if (sessionStorage.getItem('adminAuth') === 'true') {
+          document.getElementById('loginModal').style.display = 'none';
+          document.getElementById('admin-container').style.display = 'block';
+          loadData();
+        } else {
+          document.getElementById('passwordInput').focus();
+        }
+      });
+      
+      // ===== DADOS DO SITE =====
+      let siteData = {
+        profile: {
+          name: "Cecília Palitot",
+          subtitle: "Consultoria de Imagem",
+          image: "assets/cecipro.jpeg",
+          agendarText: "Agende sua análise!👇"
+        },
+        links: [
+          {
+            text: "Agendamento Coloração Pessoal- Fevereiro 2026",
+            url: "https://wa.me/5583986668183?text=Quero%20agendar%20minha%20coloração%20pessoal"
+          },
+          {
+            text: "Agendamento Consultoria de Imagem- Em breve",
+            url: "https://wa.me/5583986668183?text=Olá%2C%20gostaria%20de%20mais%20informações"
+          },
+          {
+            text: "Whatsapp",
+            url: "https://wa.me/5583986668183?text=Olá%2C%20gostaria%20de%20mais%20informações"
+          },
+          {
+            text: "Instagram",
+            url: "https://www.instagram.com/ceciliapalitot/"
+          },
+          {
+            text: "Email",
+            url: "mailto:@ceciliapalitot5@gmail.com"
+          }
+        ],
+        social: {
+          instagram: "https://www.instagram.com/ceciliapalitot",
+          whatsapp: "https://wa.me/5583986668183",
+          email: "ceciliapalitot5@gmail.com"
+        }
+      };
+
+      // Carregar dados do localStorage ao iniciar
+      function loadData() {
+        const savedData = localStorage.getItem('cecilinksData');
+        if (savedData) {
+          siteData = JSON.parse(savedData);
+        }
+        updateForm();
+      }
+
+      // Atualizar formulário com os dados
+      function updateForm() {
+        document.getElementById('profileName').value = siteData.profile.name;
+        document.getElementById('profileSubtitle').value = siteData.profile.subtitle;
+        document.getElementById('agendarText').value = siteData.profile.agendarText;
+        document.getElementById('imagePreview').src = siteData.profile.image;
+
+        document.getElementById('instagramUrl').value = siteData.social.instagram;
+        document.getElementById('whatsappUrl').value = siteData.social.whatsapp;
+        document.getElementById('emailUrl').value = siteData.social.email;
+
+        renderLinks();
+      }
+
+      // Renderizar links
+      function renderLinks() {
+        const container = document.getElementById('linksContainer');
+        container.innerHTML = '';
+
+        siteData.links.forEach((link, index) => {
+          const linkItem = document.createElement('div');
+          linkItem.className = 'link-item';
+          linkItem.innerHTML = `
+            <div class="form-group">
+              <label>Texto do Link ${index + 1}:</label>
+              <input type="text" value="${link.text}" onchange="updateLink(${index}, 'text', this.value)">
+            </div>
+            <div class="form-group">
+              <label>URL do Link ${index + 1}:</label>
+              <input type="url" value="${link.url}" onchange="updateLink(${index}, 'url', this.value)">
+            </div>
+            <button class="btn-remove" onclick="removeLink(${index})">🗑️ Remover Link</button>
+          `;
+          container.appendChild(linkItem);
+        });
+      }
+
+      // Adicionar novo link
+      function addLink() {
+        siteData.links.push({
+          text: "Novo Link",
+          url: "https://"
+        });
+        renderLinks();
+      }
+
+      // Atualizar link
+      function updateLink(index, field, value) {
+        siteData.links[index][field] = value;
+      }
+
+      // Remover link
+      function removeLink(index) {
+        if (confirm('Tem certeza que deseja remover este link?')) {
+          siteData.links.splice(index, 1);
+          renderLinks();
+        }
+      }
+
+      // Função para lidar com upload de imagem
+      function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+          // Verificar se é uma imagem
+          if (!file.type.startsWith('image/')) {
+            alert('Por favor, selecione um arquivo de imagem válido.');
+            return;
+          }
+          
+          // Verificar tamanho (máximo 10MB)
+          if (file.size > 10 * 1024 * 1024) {
+            alert('A imagem deve ter no máximo 10MB.');
+            return;
+          }
+          
+          // Ler arquivo e converter para base64
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const base64Image = e.target.result;
+            siteData.profile.image = base64Image;
+            document.getElementById('imagePreview').src = base64Image;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Salvar alterações
+      function saveChanges() {
+        // Atualizar dados do perfil
+        siteData.profile.name = document.getElementById('profileName').value;
+        siteData.profile.subtitle = document.getElementById('profileSubtitle').value;
+        // A imagem já está salva em siteData.profile.image quando o upload é feito
+        siteData.profile.agendarText = document.getElementById('agendarText').value;
+
+        // Atualizar redes sociais
+        siteData.social.instagram = document.getElementById('instagramUrl').value;
+        siteData.social.whatsapp = document.getElementById('whatsappUrl').value;
+        siteData.social.email = document.getElementById('emailUrl').value;
+
+        // Salvar no localStorage
+        localStorage.setItem('cecilinksData', JSON.stringify(siteData));
+
+        // Mostrar mensagem de sucesso
+        const successMsg = document.getElementById('successMessage');
+        successMsg.style.display = 'block';
+        setTimeout(() => {
+          successMsg.style.display = 'none';
+        }, 3000);
+
+        // Atualizar a página principal
+        updateIndexPage();
+      }
+
+      // Atualizar a página index.html
+      function updateIndexPage() {
+        alert('Alterações salvas! Recarregue a página principal (index.html) para ver as mudanças.');
+      }
+
+      // Ver página
+      function viewPage() {
+        window.open('index.html', '_blank');
+      }
+
+      // Carregar dados ao iniciar
+      loadData();
+    </script>
+  </body>
+</html>
